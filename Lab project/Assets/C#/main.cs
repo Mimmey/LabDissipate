@@ -124,8 +124,8 @@ public class main : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(first && Ball.position.y <= -0.001) { ball.gravityScale = 0; first = false; }
-        if(Ball.position.y <= 0)
+        if(first && Ball.position.y <= -0.001) {ball.gravityScale = 0; first = false;}
+        if (Ball.position.y <= 0)
         {
             //место для скрипта движения в масле.
             float n = getN(pLiq, temp) * 0.001f;
@@ -137,9 +137,10 @@ public class main : MonoBehaviour
 
             time += Time.deltaTime;
             //NewY = -1 * (2.0f / 9.0f * r * r * (pBall - pLiq) / n * 9.82f);
-            NewY = -1 * (v0 * (float)Math.Exp(-1 * alpha * time) + geff/alpha*(1 - (float)Math.Exp(-1 * alpha * time))); 
+            NewY = -1 * (v0 * (float)Math.Exp(-1 * alpha * time) + geff/alpha*(1 - (float)Math.Exp(-1 * alpha * time)));
             ball.velocity = new Vector2(0, NewY);
         }
+        //Ball.transform.position = new Vector2(1.51f, Ball.position.y);
     }
 
     void WasClicked()
