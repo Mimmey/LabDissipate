@@ -2,50 +2,51 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class main : MonoBehaviour
 {
-    float getN(float pLiq, float temp) {
-        int code = (int)temp * 1000 + (int)pLiq;
+    int getN(float pLiq, float temp) {
+        int code = (int)Math.Round(temp * 1000) + (int)Math.Round(pLiq);
         switch (code) 
         {
             case 1260:
-                return 12100f;
+                return 12100;
                 break;
             case 11260:
-                return 3950f;
+                return 3950;
                 break;
             case 21260:
-                return 1490f;
+                return 1490;
                 break;
             case 31260:
-                return 630f;
+                return 630;
                 break;
             case 41260:
-                return 330f;
+                return 330;
                 break;
             case 51260:
-                return 180f;
+                return 180;
                 break;
             case 1220:
-                return 6500f;
+                return 6500;
                 break;
             case 11220:
-                return 2140f;
+                return 2140;
                 break;
             case 21220:
-                return 802f;
+                return 802;
                 break;
             case 31220:
-                return 353f;
+                return 353;
                 break;
             case 41220:
-                return 170f;
+                return 170;
                 break;
             case 51220:
-                return 97f;
+                return 97;
                 break;
             /*case 876:
                 return 0.910f;
@@ -124,23 +125,33 @@ public class main : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(first && Ball.position.y <= -0.001) {ball.gravityScale = 0; first = false;}
+    
+
+        if (first && Ball.position.y <= -0.001f) {ball.gravityScale = 0; first = false;}
         if (Ball.position.y <= 0)
         {
             //место для скрипта движения в масле.
-            float n = getN(pLiq, temp) * 0.001f;
+            try
+            {
+                float n = getN(rowater.pLiqid, tempSlider.value * 10) * 0.001f;
+                //print("n: " + n + "\n");
+                float r = Convert.ToSingle(Math.Pow((massSlider.value * 0.000001f) * 0.75 / Math.PI / roball.pBall, 0.3333333));
+                //print("r: " + r + "\n");
+                float alpha = 6 * Convert.ToSingle(Math.PI) * n * r / (massSlider.value * 0.000001f);
+                //print("alpha: " + alpha + "\n");
+                float geff = 9.82f * (1 - (rowater.pLiqid / roball.pBall));
+                //print("geff: " + geff + "\n");
+                float v0 = Convert.ToSingle(Math.Pow(2 * 9.82f * (h0Slider.value * 0.01f), 0.5f));
+                //print("v0: " + v0 + "\n");
 
-            float r = (float)Math.Pow(mass * 0.75f / (float)Math.PI / pBall, 0.333333f);
-            float alpha = 6 * (float)Math.PI * n * r / mass;
-            float geff = 9.82f * (1 - (pLiq / pBall));
-            float v0 = (float)Math.Sqrt(2 * 9.82f * h0);
-
-            time += Time.deltaTime;
-            //NewY = -1 * (2.0f / 9.0f * r * r * (pBall - pLiq) / n * 9.82f);
-            NewY = -1 * (v0 * (float)Math.Exp(-1 * alpha * time) + geff/alpha*(1 - (float)Math.Exp(-1 * alpha * time)));
-            ball.velocity = new Vector2(0, NewY);
+                time += Time.deltaTime;
+                //NewY = -1 * (2.0f / 9.0f * r * r * (pBall - pLiq) / n * 9.82f);
+                NewY = -1 * (v0 * Convert.ToSingle(Math.Exp(-1 * alpha * time)) + geff / alpha * (1 - Convert.ToSingle(Math.Exp(-1 * alpha * time))));
+                //print("NewY: " + NewY + "\n");
+                ball.velocity = new Vector2(0, NewY);
+            }
+            catch (Exception e) {}
         }
-        //Ball.transform.position = new Vector2(1.51f, Ball.position.y);
     }
 
     void WasClicked()
@@ -151,7 +162,7 @@ public class main : MonoBehaviour
         mass = massSlider.value*0.000001f; //мг->кг
         h0 = h0Slider.value*0.01f; //см->м
         h0Slider.enabled = false;
-        ball.GetComponent<Rigidbody2D>().simulated = true;
+        ball.GetComponent<Rigidbody2D>().simulated = true; 
         h0scale.enabled = false;
         massSlider.enabled = false;
         tempSlider.enabled = false;
