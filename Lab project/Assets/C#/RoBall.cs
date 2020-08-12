@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class RoBall : MonoBehaviour
 {
 
-    public Dropdown dropdown;
+    public TMP_Dropdown dropdown;
     public int pBall;
     Text text;
     // Start is called before the first frame update

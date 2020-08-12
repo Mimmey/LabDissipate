@@ -5,6 +5,7 @@ using System.Linq.Expressions;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class main : MonoBehaviour
 {
@@ -97,8 +98,8 @@ public class main : MonoBehaviour
     float pLiq = 0;
     public Rigidbody2D ball;
     public Transform Ball;
-    public Dropdown Deoppball;
-    public Dropdown Droppliq;
+    public TMP_Dropdown Deoppball;
+    public TMP_Dropdown Droppliq;
     public H0Scale h0scale;
     public Slider h0Slider;
     public Slider massSlider;
